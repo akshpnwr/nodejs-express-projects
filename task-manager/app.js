@@ -1,3 +1,4 @@
+require("./db/connect"); //Executes the mongoose.connect fn automatically
 const express = require("express");
 const app = express();
 const tasks = require("./routes/tasks");
