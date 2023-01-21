@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
 
-const connectionString =
-  "mongodb+srv://akash:uWwJbfoSukkJD3c8@cluster0.ikpaltn.mongodb.net/03-TASK-MANAGER?retryWrites=true&w=majority";
+const connectDB = (url) => {
+  return mongoose.connect(url, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  });
+};
 
-mongoose
-  .connect(connectionString)
-  .then(() => console.log("CONNECTED TO THE DATABASE..."))
-  .catch((err) => console.log(err));
+module.exports = connectDB;
