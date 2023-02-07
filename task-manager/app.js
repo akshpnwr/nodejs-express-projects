@@ -3,6 +3,7 @@ const app = express()
 const tasks = require('./routes/tasks')
 const connectDB = require('./db/connect') //Executes the mongoose.connect fn automatically
 const notFound = require('./middleware/notFound')
+const errorHandlerMiddleware = require('./middleware/error-handler')
 
 require('dotenv').config()
 
@@ -18,6 +19,8 @@ app.get('/hello', (req, res) => {
 })
 
 app.use(notFound)
+
+app.use(errorHandlerMiddleware)
 
 const port = 3000
 
