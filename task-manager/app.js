@@ -22,7 +22,9 @@ app.use(notFound)
 
 app.use(errorHandlerMiddleware)
 
-const port = 3000
+//$env:MY_VAR="8000"
+//node app.js
+const port = process.env.PORT || 3000
 
 const start = async () => {
   try {
