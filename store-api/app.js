@@ -5,6 +5,7 @@ const app = express()
 const products = require('./routes/products')
 const notFoundMiddleware = require('./middleware/not-found')
 const errorMiddleware = require('./middleware/error-handler')
+const connectDB = require('./db/connect')
 
 // middleware
 app.use(express.json())
@@ -18,5 +19,17 @@ app.get('/', (req, res) => {
 app.use(notFoundMiddleware)
 app.use(errorMiddleware)
 
+//$env:MY_VAR="8000"
+//node app.js
 const port = process.env.PORT || 3000
-app.listen(port, console.log(`Server running at port ${port}...`))
+
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI)
+    app.listen(port, console.log(`Server running at port ${port}...`))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+start()
