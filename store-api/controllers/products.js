@@ -1,9 +1,17 @@
-const getAllProductsStatic = (req, res) => {
-  throw new Error('testing async errors')
-  res.status(200).json({ msg: 'Products test route' })
+const Product = require('../models/product')
+
+const getAllProductsStatic = async (req, res) => {
+  const { featured } = req.query
+
+  const queryObject = {}
+
+  if (featured) queryObject.featured = featured === 'true'
+
+  const products = await Product.find(queryObject)
+  res.status(200).json({ products, nbHits: products.length })
 }
 
-const getAllProducts = (req, res) => {
+const getAllProducts = async (req, res) => {
   res.status(200).json({ msg: 'Getting all products' })
 }
 
