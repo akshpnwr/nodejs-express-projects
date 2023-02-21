@@ -1,17 +1,13 @@
 const Product = require('../models/product')
 
 const getAllProductsStatic = async (req, res) => {
-  const search = 'ACC'
-
-  const products = await Product.find({
-    name: { $regex: search, $options: 'i' },
-  })
+  const products = await Product.find({}).sort('-name price')
 
   res.status(200).json({ products, nbHits: products.length })
 }
 
 const getAllProducts = async (req, res) => {
-  const { featured, company, name } = req.query
+  const { featured, company, name, sort } = req.query
 
   const queryObject = {}
 
@@ -20,7 +16,19 @@ const getAllProducts = async (req, res) => {
   if (name) queryObject.name = { $regex: name, $options: 'i' }
 
   console.log(queryObject)
-  const products = await Product.find(queryObject)
+
+  let results = Product.find(queryObject).limit(10)
+
+  if (sort) {
+    const sortList = sort.split(',').join(' ')
+    console.log(sortList)
+    results = results.sort(sort)
+  } else {
+    results = results.sort('createdAt')
+  }
+
+  const products = await results
+
   res.status(200).json({ products, nbHits: products.length })
 }
 
